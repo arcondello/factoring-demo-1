@@ -692,4 +692,4 @@ for p, value in fixed_variables.items():
 
 
 response = sampler.sample(bqm, num_reads=1000)
-samples = embutil.unembed_samples(response, embedding, chain_break_method=embutil.discard)
+samples = embutil.unembed_samples(response, embedding)

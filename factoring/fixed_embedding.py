@@ -1,5 +1,6 @@
 from __future__ import division
 from math import sqrt, ceil
+from collections import OrderedDict
 
 import matplotlib.pyplot as plt
 
@@ -7,6 +8,11 @@ import dimod
 import dwave_networkx as dnx
 import dwave_embedding_utilities as embutil
 from dwave.system.samplers import DWaveSampler
+
+from anneal_offsets import build_chain_offsets
+
+
+
 
 sampler = DWaveSampler()
 t = 4
@@ -662,7 +668,7 @@ embedding = {'a0':  {c2i[0, 4, 0, 1], c2i[1, 4, 0, 1], c2i[2, 4, 0, 1], c2i[3, 4
 
 
 
-P = 21
+P = 49
 
 # fix product qubits
 fixed_variables = {}
@@ -691,5 +697,31 @@ for p, value in fixed_variables.items():
 
 
 
-response = sampler.sample(bqm, num_reads=1000)
+response = sampler.sample(bqm, num_reads=50, anneal_offsets=build_chain_offsets(sampler.properties['anneal_offset_ranges'], embedding))
 samples = embutil.unembed_samples(response, embedding)
+
+# we know that three_bit_multiplier has created variables
+a_vars = ['a0', 'a1', 'a2']
+b_vars = ['b0', 'b1', 'b2']
+
+results_dict = OrderedDict()
+
+total = len(samples)
+
+for sample in samples:
+    a = b = 0
+
+    for lbl in reversed(a_vars):
+        a = (a << 1) | sample[lbl]
+    for lbl in reversed(b_vars):
+        b = (b << 1) | sample[lbl]
+
+    if (a, b, P) in results_dict:
+        results_dict[(a, b, P)]["numOfOccurrences"] += 1
+        results_dict[(a, b, P)]["percentageOfOccurrences"] = 100 * results_dict[(a, b, P)]["numOfOccurrences"] / total
+    else:
+        results_dict[(a, b, P)] = {"a": a,
+                                   "b": b,
+                                   "valid": a * b == P,
+                                   "numOfOccurrences": 1,
+                                   "percentageOfOccurrences": 100 * 1 / total}

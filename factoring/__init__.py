@@ -15,3 +15,6 @@
 from factoring.interfaces import *
 from factoring.embedding import *
 from factoring.json_schema import *
+
+from factoring.fixed_embedding import *
+from factoring.anneal_offsets import *

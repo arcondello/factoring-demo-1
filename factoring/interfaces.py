@@ -81,7 +81,7 @@ def factor(P, use_saved_embedding=True):
         # load a pre-calculated embedding
         from factoring.embedding import embeddings
         embedding = embeddings[sampler.solver.id]
-    else:
+    elif not embedding:
         # get the embedding
         embedding = minorminer.find_embedding(bqm.quadratic, target_edgelist)
         if bqm and not embedding:

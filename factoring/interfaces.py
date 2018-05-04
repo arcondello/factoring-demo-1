@@ -38,7 +38,7 @@ def validate_input(ui, range_):
         raise ValueError("Input must be between {} and {}".format(start, stop))
 
 
-def factor(P, use_saved_embedding=True):
+def factor(P, embedding=None):
 
     ####################################################################################################
     # get circuit
@@ -162,4 +162,4 @@ def factor(P, use_saved_embedding=True):
     if 'timing' in response.info:
         output['timing']['actual']['qpuProcessTime'] = response.info['timing']['qpu_access_time']
 
-    return output
+    return output, embedding

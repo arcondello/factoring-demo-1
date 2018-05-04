@@ -2,28 +2,22 @@
 import shelve
 import time
 
-from factoring.interfaces import get_factor_bqm, submit_factor_bqm, postprocess_factor_response
+from factoring.interfaces import factor
 # from factoring.fixed_embedding import factor
 
 
 if __name__ == '__main__':
-    shelf = shelve.open("sweep-P/output1524593053.87")
-    embedding = shelf['embedding']
-    shelf.close()
+    # shelf = shelve.open("sweep-P/output1524593053.87")
+    # embedding = shelf['embedding']
+    # shelf.close()
     for trial in range(1000):
-        shelf = shelve.open("output1524593053.87/output%s" % time.time())
+        shelf = shelve.open("sweep-SIMULATED_2000Q_CLOUD_TEST/output%s" % time.time())
 
-        bqm = get_factor_bqm(49)
-        response, embedding = submit_factor_bqm(bqm, embedding) # comment out input embedding to generate new one
-        output49 = postprocess_factor_response(response, 49)
+        output49, embedding = factor(49)#, embedding) # comment out input embedding to generate new one
 
-        bqm = get_factor_bqm(21)
-        response, _ = submit_factor_bqm(bqm, embedding)
-        output21 = postprocess_factor_response(response, 21)
+        output21, _ = factor(21, embedding)
 
-        bqm = get_factor_bqm(12)
-        response, _ = submit_factor_bqm(bqm, embedding)
-        output12 = postprocess_factor_response(response, 12)
+        output12, _ = factor(12, embedding)
 
         shelf['output49'] = output49
         shelf['output21'] = output21

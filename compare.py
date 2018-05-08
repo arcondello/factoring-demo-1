@@ -87,5 +87,8 @@ def resultsToPandas(in_directory):
     return df
 
 
-if __name__ == '__main__':
-    findEmbeddings("sweep-for-real")
+def getEmbedding(in_file):
+    shelf = shelve.open(in_file)
+    embedding = shelf['embedding']
+    shelf.close()
+    return embedding

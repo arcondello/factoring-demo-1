@@ -2,11 +2,11 @@ from __future__ import division
 from math import sqrt, ceil
 from collections import OrderedDict
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 import dimod
 import dwave_networkx as dnx
-import dwave_embedding_utilities as embutil
+import dwave_embedding_utilities as embutil # REQUIRES OLD LIB BECAUSE WE DON'T KNOW SOURCE BQM
 from dwave.system.samplers import DWaveSampler
 
 from factoring.anneal_offsets import build_chain_offsets
@@ -730,7 +730,8 @@ def factor(P):
 
 
     response = sampler.sample(bqm, num_reads=NUM_READS, anneal_offsets=anneal_offsets_best)
-    samples = embutil.unembed_samples(response, embedding_best)
+    response.change_vartype('BINARY')
+    samples = embutil.unembed_samples(response, embedding_best) # REQUIRES OLD LIB BECAUSE WE DON'T KNOW SOURCE BQM
 
 
 

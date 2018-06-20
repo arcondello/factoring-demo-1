@@ -38,7 +38,7 @@ def validate_input(ui, range_):
         raise ValueError("Input must be between {} and {}".format(start, stop))
 
 
-def factor(P, embedding=None):
+def factor(P, use_saved_embedding=True, embedding=None):
 
     ####################################################################################################
     # get circuit

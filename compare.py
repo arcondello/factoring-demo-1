@@ -12,9 +12,9 @@ def findEmbeddings(out_directory):
     for trial in range(1000):
         shelf = shelve.open(os.path.join(out_directory, str(time.time())))
 
-        output49, embedding = factor(49)
-        output21, _ = factor(21, embedding)
-        output12, _ = factor(12, embedding)
+        output49, embedding = factor(49, False)
+        output21, _ = factor(21, False, embedding)
+        output12, _ = factor(12, False, embedding)
 
         shelf['output49'] = output49
         shelf['output21'] = output21
@@ -35,9 +35,9 @@ def testEmbedding(in_file, out_directory):
     for trial in range(1000):
         shelf = shelve.open(os.path.join(out_directory, str(time.time())))
 
-        output49, _ = factor(49, embedding)
-        output21, _ = factor(21, embedding)
-        output12, _ = factor(12, embedding)
+        output49, _ = factor(49, False, embedding)
+        output21, _ = factor(21, False, embedding)
+        output12, _ = factor(12, False, embedding)
 
         shelf['output49'] = output49
         shelf['output21'] = output21

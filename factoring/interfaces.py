@@ -38,7 +38,7 @@ def validate_input(ui, range_):
         raise ValueError("Input must be between {} and {}".format(start, stop))
 
 
-def factor(P, use_saved_embedding=True, embedding=None):
+def factor(P, use_saved_embedding=True, embedding=None, profile=None):
 
     ####################################################################################################
     # get circuit
@@ -74,7 +74,7 @@ def factor(P, use_saved_embedding=True, embedding=None):
     sample_time = time.time()
 
     # get QPU sampler
-    sampler = DWaveSampler()
+    sampler = DWaveSampler(profile=profile)
     _, target_edgelist, target_adjacency = sampler.structure
 
     if use_saved_embedding:

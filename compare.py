@@ -5,16 +5,26 @@ import os
 from factoring.interfaces import factor
 
 
-def findEmbeddings(out_directory):
+def findEmbeddings(out_directory, profile=None):
+    """
+
+    Args:
+        out_directory: e.g. shelves/YOUR_TEST_NAME
+
+        profile: as in dwave profile for the cloud-client
+
+    """
     if not os.path.exists(out_directory):
         os.mkdir(out_directory)
 
     for trial in range(1000):
         shelf = shelve.open(os.path.join(out_directory, str(time.time())))
 
-        output49, embedding = factor(49, False)
-        output21, _ = factor(21, False, embedding)
-        output12, _ = factor(12, False, embedding)
+        output49, embedding = factor(49, False, profile=profile)
+        output21, _ = factor(21, False, embedding, profile=profile)
+        output12, _ = factor(12, False, embedding, profile=profile)
+
+        print('trial: ', trial)
 
         shelf['output49'] = output49
         shelf['output21'] = output21
@@ -24,7 +34,7 @@ def findEmbeddings(out_directory):
         shelf.close()
 
 
-def testEmbedding(in_file, out_directory):
+def testEmbedding(in_file, out_directory, profile=None):
     shelf = shelve.open(in_file)
     embedding = shelf['embedding']
     shelf.close()
@@ -35,9 +45,9 @@ def testEmbedding(in_file, out_directory):
     for trial in range(1000):
         shelf = shelve.open(os.path.join(out_directory, str(time.time())))
 
-        output49, _ = factor(49, False, embedding)
-        output21, _ = factor(21, False, embedding)
-        output12, _ = factor(12, False, embedding)
+        output49, _ = factor(49, False, embedding, profile=profile)
+        output21, _ = factor(21, False, embedding, profile=profile)
+        output12, _ = factor(12, False, embedding, profile=profile)
 
         shelf['output49'] = output49
         shelf['output21'] = output21
